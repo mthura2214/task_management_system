@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface NotificationRepository extends JpaRepository<Notification, Integer> {
 
     Optional<Notification> findByTaskAndUser(Task task, User user);
-
+    List<Notification> findAllByUserId(Integer userId);
     List<Notification> findAllByUser(User user);
 
     List<Notification> findAllByTask(Task task);

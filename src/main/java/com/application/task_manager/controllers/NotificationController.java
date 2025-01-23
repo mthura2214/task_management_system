@@ -52,11 +52,11 @@ public class NotificationController {
         return new ResponseEntity<>(notifications, HttpStatus.OK);
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Notification>> getNotificationsByUser(@PathVariable Integer userId) {
-        List<Notification> notifications = notificationService.findNotificationsByUser(new User(userId));
-        return new ResponseEntity<>(notifications, HttpStatus.OK);
-    }
+@GetMapping("/user/{userId}")
+public ResponseEntity<List<Notification>> getNotificationsByUser(@PathVariable Integer userId) {
+    List<Notification> notifications = notificationService.findNotificationsByUser(userId);
+    return new ResponseEntity<>(notifications, HttpStatus.OK);
+}
 
     @GetMapping("/isRead/{isRead}")
     public ResponseEntity<List<Notification>> getNotificationsByIsRead(@PathVariable Boolean isRead) {

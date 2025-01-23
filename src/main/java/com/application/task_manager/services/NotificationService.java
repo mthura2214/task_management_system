@@ -34,8 +34,8 @@ public class NotificationService {
         notificationRepository.deleteById(id);
     }
 
-    public List<Notification> findNotificationsByUser(User user) {
-        return notificationRepository.findAllByUser(user);
+    public List<Notification> findNotificationsByUser(Integer userId) {
+        return notificationRepository.findAllByUserId(userId);
     }
 
     public List<Notification> findNotificationsByTask(Task task) {

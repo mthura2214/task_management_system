@@ -11,13 +11,11 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-
-    Optional<User> findByUsername(String username);
-
+    //find user by email
     Optional<User> findByEmail(String email);
 
-    List<User> findAllByRole(User.Role role);
+    //find user by role
+    @Query("SELECT u FROM User u WHERE u.role = :role")
+    List<User> findByRole(@Param("role") String role);
 
-    @Query("SELECT u FROM User u WHERE u.username = :username AND u.password = :password")
-    Optional<User> findByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
 }

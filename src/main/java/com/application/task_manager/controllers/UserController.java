@@ -12,26 +12,30 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @GetMapping
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/getAllUsers")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.findAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getUser/{id}")
     public ResponseEntity<User> getUserById(@PathVariable int id) {
         User user = userService.findUserById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @GetMapping("/username/{username}")
-    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
-        User user = userService.findUserByUsername(username);
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
+//    @GetMapping("/username/{username}")
+//    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+//        User user = userService.findUserByUsername(username);
+//        return new ResponseEntity<>(user, HttpStatus.OK);
+//    }
 
     @GetMapping("/email/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
@@ -39,19 +43,19 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User newUser = userService.createUser(user);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User user) {
         User updatedUser = userService.updateUser(id, user);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable int id) {
         userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
