@@ -1,10 +1,6 @@
 package com.application.task_manager.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,52 +9,42 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, updatable = false)
+    @Column(name = "id")
     private int id;
 
-    @NotBlank(message = "First name cannot be blank")
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @NotBlank(message = "Last name cannot be blank")
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @NotBlank(message = "Username cannot be blank")
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @NotBlank(message = "Password cannot be blank")
-    @Size(min = 8, message = "Password must be at least 8 characters")
     @Column(name = "password", nullable = false)
     private String password;
 
-    @NotBlank(message = "Email cannot be blank")
-    @Email(message = "Email should be valid")
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
+    @Column(name = "role")
     private Role role = Role.USER;
 
-    @Column(name = "create_time", nullable = false, updatable = false)
+    @Column(name = "create_time")
     private LocalDateTime createTime;
 
-    @PrePersist
-    protected void onCreate() {
-        this.createTime = LocalDateTime.now();
+    public User(int userId) {
     }
 
     public enum Role {
         ADMIN, USER
     }
 
-    // Default constructor required by JPA
-    public User() {}
+    public User() {
+    }
 
-    // Constructor with fields
-    public User(int id, String firstName, String lastName, String username, String password, String email, Role role) {
+    public User(int id, String firstName, String lastName, String username, String password, String email, Role role, LocalDateTime createTime) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -66,10 +52,11 @@ public class User {
         this.password = password;
         this.email = email;
         this.role = role;
-        this.createTime = LocalDateTime.now();
+        this.createTime = createTime;
     }
 
     // Getters and Setters
+
     public int getId() {
         return id;
     }
@@ -130,7 +117,10 @@ public class User {
         return createTime;
     }
 
-    // Exclude sensitive data in toString
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -138,6 +128,7 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", role=" + role +
                 ", createTime=" + createTime +

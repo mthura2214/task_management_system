@@ -1,76 +1,61 @@
 package com.application.task_manager.controllers;
-
 import com.application.task_manager.models.User;
-import com.application.task_manager.models.User.Role;
-import com.application.task_manager.repositories.UserRepository;
+import com.application.task_manager.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
-    // Create a new user
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        if (userRepository.existsByUsername(user.getUsername())) {
-            return ResponseEntity.badRequest().body(null);
-        }
-        if (userRepository.existsByEmail(user.getEmail())) {
-            return ResponseEntity.badRequest().body(null);
-        }
-        user.setRole(Role.USER); // Default role
-        User savedUser = userRepository.save(user);
-        return ResponseEntity.ok(savedUser);
-    }
-
-    // Get all users
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        return ResponseEntity.ok(users);
+        List<User> users = userService.findAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    // Get a user by ID
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable int id) {
-        Optional<User> user = userRepository.findById(id);
-        return user.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        User user = userService.findUserById(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    // Update a user
+    @GetMapping("/username/{username}")
+    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+        User user = userService.findUserByUsername(username);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+        User user = userService.findUserByEmail(email);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        User newUser = userService.createUser(user);
+        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User userDetails) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            user.setFirstName(userDetails.getFirstName());
-            user.setLastName(userDetails.getLastName());
-            user.setUsername(userDetails.getUsername());
-            user.setPassword(userDetails.getPassword());
-            user.setEmail(userDetails.getEmail());
-            user.setRole(userDetails.getRole());
-            User updatedUser = userRepository.save(user);
-            return ResponseEntity.ok(updatedUser);
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User user) {
+        User updatedUser = userService.updateUser(id, user);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
-    // Delete a user
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
-        if (userRepository.existsById(id)) {
-            userRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable int id) {
+        userService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
+
+

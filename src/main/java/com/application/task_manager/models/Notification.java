@@ -1,5 +1,4 @@
 package com.application.task_manager.models;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -8,40 +7,41 @@ public class Notification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idnotification")
-    private int id;
+    @Column(name = "id")
+    private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "Task_idTask", nullable = false)
+    @JoinColumn(name = "task_id", nullable = false)
     private Task task;
 
     @ManyToOne
-    @JoinColumn(name = "user_idUser", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(name = "message", nullable = false)
     private String message;
 
     @Column(name = "is_read")
-    private boolean read = false;
+    private Boolean isRead = false;
 
     public Notification() {
     }
 
-    public Notification(int id, Task task, User user, String message, boolean read) {
+    public Notification(Integer id, Task task, User user, String message, Boolean isRead) {
         this.id = id;
         this.task = task;
         this.user = user;
         this.message = message;
-        this.read = read;
+        this.isRead = isRead;
     }
 
     // Getters and Setters
-    public int getId() {
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -69,12 +69,12 @@ public class Notification {
         this.message = message;
     }
 
-    public boolean isRead() {
-        return read;
+    public Boolean getRead() {
+        return isRead;
     }
 
-    public void setRead(boolean read) {
-        this.read = read;
+    public void setRead(Boolean read) {
+        isRead = read;
     }
 
     @Override
@@ -84,7 +84,8 @@ public class Notification {
                 ", task=" + task +
                 ", user=" + user +
                 ", message='" + message + '\'' +
-                ", read=" + read +
+                ", isRead=" + isRead +
                 '}';
     }
 }
+

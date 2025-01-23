@@ -1,5 +1,4 @@
 package com.application.task_manager.models;
-
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,11 +9,11 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idTask")
+    @Column(name = "id")
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "User_idUser", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(name = "title", nullable = false)
@@ -27,24 +26,27 @@ public class Task {
     private String priority;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
     private Status status = Status.PENDING;
 
     @Column(name = "due_date", nullable = false)
     private LocalDate dueDate;
 
-    @Column(name = "create_time", updatable = false)
+    @Column(name = "create_time")
     private LocalDateTime createTime;
 
     @Column(name = "update_time")
     private LocalDateTime updateTime;
 
+    public Task(Integer taskId) {
+    }
+
     public enum Status {
         PENDING, IN_PROGRESS, COMPLETED
     }
 
-    // Constructors
-    public Task() {}
+    public Task() {
+    }
 
     public Task(int id, User user, String title, String description, String priority, Status status, LocalDate dueDate, LocalDateTime createTime, LocalDateTime updateTime) {
         this.id = id;
@@ -59,6 +61,7 @@ public class Task {
     }
 
     // Getters and Setters
+
     public int getId() {
         return id;
     }
@@ -146,3 +149,4 @@ public class Task {
                 '}';
     }
 }
+
