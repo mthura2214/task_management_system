@@ -1,4 +1,5 @@
 package com.application.task_manager.controllers;
+
 import com.application.task_manager.models.User;
 import com.application.task_manager.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,11 +44,19 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @PostMapping("/login")
+    public String login(@RequestBody User user) {
+        return userService.verifyUser(user);
+    }
     @PostMapping("/register")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User newUser = userService.createUser(user);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
+//    @PostMapping("/register")
+//    public User createUser(@RequestBody User user) {
+//        return userService.createUser(user);
+//    }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User user) {

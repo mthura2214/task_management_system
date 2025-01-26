@@ -1,5 +1,7 @@
-package com.application.task_manager.security;
+package com.application.task_manager.security.secConfig;
 
+import com.application.task_manager.security.jwt.JwtAuthFilter;
+import com.application.task_manager.services.MyUserService;
 import com.application.task_manager.services.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,9 +24,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration {
 
     private final JwtAuthFilter jwtAuthFilter;
-    private final UserService userService;
+    private final MyUserService userService;
 
-    public SecurityConfiguration(JwtAuthFilter jwtAuthFilter, UserService userService) {
+    public SecurityConfiguration(JwtAuthFilter jwtAuthFilter, MyUserService userService) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.userService = userService;
     }
@@ -34,7 +36,7 @@ public class SecurityConfiguration {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/", "/api/users/register", "/api/users/getAllUsers", "/api/users/getUser/**", "/api/users/email/**").permitAll()
+                        .requestMatchers("/", "/api/users/login", "/api/users/register", "/api/users/getAllUsers", "/api/users/getUser/**", "/api/users/email/**").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .requestMatchers("/user/**").hasAnyAuthority("ADMIN", "USER")
                         .anyRequest().authenticated())
