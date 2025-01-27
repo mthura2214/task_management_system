@@ -32,7 +32,7 @@ class UserControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        user = UserFactory.createUser(2, "John", "Doe", "asi.doe@example.com", "password123", Role.USER, "2023-10-10 10:10:10");
+        user = UserFactory.createUser(2, "John", "Doe",  "test" ,"asi.doe@example.com", "password123", Role.USER, "2023-10-10 10:10:10");
     }
 
     @Test

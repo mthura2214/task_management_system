@@ -16,17 +16,19 @@ public class UserFactoryTest {
         String firstName = "John";
         String lastName = "Doe";
         String email = "johndoe@example.com";
+        String username = "johndoe";
         String password = "password";
         Role role = Role.USER;
         String createTime = "2022-01-01 12:00:00";
 
-        User user = UserFactory.createUser(id, firstName, lastName, email, password, role, createTime);
+        User user = UserFactory.createUser(id, firstName, lastName, email, username, password, role, createTime);
 
         assertNotNull(user);
         assertEquals(id, user.getId());
         assertEquals(firstName, user.getFirstName());
         assertEquals(lastName, user.getLastName());
         assertEquals(email, user.getEmail());
+        assertEquals(username, user.getUsername());
         assertEquals(password, user.getPassword());
         assertEquals(role, user.getRole());
         System.out.println(user);
@@ -37,13 +39,15 @@ public class UserFactoryTest {
         String firstName = "John";
         String lastName = "Doe";
         String email = "johndoe@example.com";
+        String username = "johndoe";
         String password = "password";
 
-        User user = UserFactory.createUser2(firstName, lastName, email, password);
+        User user = UserFactory.createUser2(firstName, lastName, email, username, password);
         assertNotNull(user);
         assertEquals(firstName, user.getFirstName());
         assertEquals(lastName, user.getLastName());
         assertEquals(email, user.getEmail());
+        assertEquals(username, user.getUsername());
         assertEquals(password, user.getPassword());
         System.out.println(user);
     }
